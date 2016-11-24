@@ -1,0 +1,23 @@
+np-wp:
+  image: wordpress
+  links:
+  - np-wpdb:mysql
+  ports:
+  - 80:80
+  volumes:
+  - ./wp_html:/var/www/html
+np-wpdb:
+  image: mariadb
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+  volumes:
+  - ./db/:/var/lib/mysql
+np-wpmy:
+  image: corbinu/docker-phpmyadmin
+  links:
+    - np-wpdb:mysql
+  ports:
+    - 8181:80
+  environment:
+    MYSQL_USERNAME: root
+    MYSQL_ROOT_PASSWORD: root
