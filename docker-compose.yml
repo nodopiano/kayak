@@ -1,5 +1,6 @@
 np-wp:
-  image: wordpress
+  build: .
+  dockerfile: Dockerfile
   links:
   - np-wpdb:mysql
   ports:
