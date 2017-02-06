@@ -12,9 +12,11 @@ np-wp:
     VOLUME: '/var/www/html'
     DOCKER_USER: 'www-data'
     DOCKER_GROUP: 'www-data'
-    HOST_USER_ID: 1001
-    HOST_GROUP_ID: 1001
-    SITE_NAME: test
+    HOST_USER_ID: "$UID"
+    HOST_GROUP_ID: "$UID"
+    SITE_NAME: nani
+    SITE_URL: nani.dev
+    WP_EMAIL: info@nodopiano.it
     WP_USER: nodopiano
     WP_PASSWORD: nodopiano
 np-wpdb:
