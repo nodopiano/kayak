@@ -14,6 +14,9 @@ then
     yarn
     bower install
     # qui possiamo cambiare il gulpfile
+    sed -i -- "s/FoundationPress/$themename/g" style.css 
+    sed -i -- "s/Ole Fredrik Lie/Nodopiano/g" style.css 
+    sed -i -- "s/olefredrik.com/www.nodopiano.it/g" style.css 
     cd -
 fi
 rm -R wp_html/wp-content/themes/twentyfifteen/
