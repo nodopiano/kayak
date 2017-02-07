@@ -14,8 +14,8 @@ np-wp:
     DOCKER_GROUP: 'www-data'
     HOST_USER_ID: "$UID"
     HOST_GROUP_ID: "$UID"
-    SITE_NAME: nodopiano
-    SITE_URL: nodopiano.dev
+    SITE_NAME: sitename
+    SITE_URL: sitename.dev
     WP_EMAIL: info@nodopiano.it
     WP_USER: nodopiano
     WP_PASSWORD: nodopiano
