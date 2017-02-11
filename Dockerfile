@@ -1,4 +1,4 @@
-FROM wordpress
+FROM wordpress:php7.0
 
 ARG VOLUME
 ARG DOCKER_USER
