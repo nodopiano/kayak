@@ -10,10 +10,6 @@ np-wp:
   - './tools:/tools' 
   environment: 
     VOLUME: '/var/www/html'
-    DOCKER_USER: 'www-data'
-    DOCKER_GROUP: 'www-data'
-    HOST_USER_ID: "$UID"
-    HOST_GROUP_ID: "$UID"
     SITE_NAME: sitename
     SITE_URL: sitename.dev
     WP_EMAIL: info@nodopiano.it

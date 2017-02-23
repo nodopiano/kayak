@@ -16,6 +16,7 @@ COPY tools/install_wp.sh /bin/install_wp
 RUN chmod +x /bin/wp-cli.phar
 RUN groupmod -o -g ${HOST_GUID} www-data
 RUN usermod -o -u ${HOST_GUID} www-data
+RUN chown -R www-data:www-data /usr/src/wordpress
 
-COPY tools/perms.sh /usr/local/bin/perms
-COPY tools/permission_fix.sh /usr/local/bin/permission_fix
+#COPY tools/perms.sh /usr/local/bin/perms
+#COPY tools/permission_fix.sh /usr/local/bin/permission_fix
