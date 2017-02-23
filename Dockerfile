@@ -1,10 +1,7 @@
 FROM wordpress:php7.0
 
 ARG VOLUME
-ARG DOCKER_USER
-ARG DOCKER_GROUP
-ARG HOST_USER_ID
-ARG HOST_GROUP_ID
+ENV HOST_GUID=1001
  
 
 # Install requirements for wp-cli support
@@ -17,6 +14,8 @@ RUN curl -o /bin/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-
 COPY tools/wpcli.sh /bin/wp
 COPY tools/install_wp.sh /bin/install_wp
 RUN chmod +x /bin/wp-cli.phar
+RUN groupmod -o -g ${HOST_GUID} www-data
+RUN usermod -o -u ${HOST_GUID} www-data
 
 COPY tools/perms.sh /usr/local/bin/perms
 COPY tools/permission_fix.sh /usr/local/bin/permission_fix
