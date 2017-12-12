@@ -1,32 +1,47 @@
-np-wp:
-  build: .
-  dockerfile: Dockerfile
-  links:
-  - np-wpdb:mysql
-  ports:
-  - 80:80
-  volumes:
-  - ./wp_html:/var/www/html
-  - './tools:/tools' 
-  environment: 
-    VOLUME: '/var/www/html'
-    SITE_NAME: sitename
-    SITE_URL: sitename.dev
-    WP_EMAIL: info@nodopiano.it
-    WP_USER: nodopiano
-    WP_PASSWORD: nodopiano
-np-wpdb:
-  image: mariadb
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-  volumes:
-  - ./db/:/var/lib/mysql
-np-wpmy:
-  image: corbinu/docker-phpmyadmin
-  links:
+version: '2'
+services:
+  np-wp:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    links:
     - np-wpdb:mysql
-  ports:
-    - 8181:80
-  environment:
-    MYSQL_USERNAME: root
-    MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 80:80
+    volumes:
+    - ./wp_html:/var/www/html
+    - './docker/tools:/tools' 
+    environment: 
+      VOLUME: '/var/www/html'
+      SITE_NAME: sitename
+      SITE_URL: sitename.dev
+      WP_EMAIL: info@nodopiano.it
+      WP_USER: nodopiano
+      WP_PASSWORD: nodopiano
+    networks:
+      - wordpress
+  np-wpdb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+    - wordpressmysql:/var/lib/mysql
+    networks:
+      - wordpress
+  np-wpmy:
+    image: corbinu/docker-phpmyadmin
+    links:
+      - np-wpdb:mysql
+    ports:
+      - 8181:80
+    networks:
+      - wordpress
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+networks:
+  wordpress:
+    driver: "bridge"
+volumes:
+  wordpressmysql:
+    driver: "local"
