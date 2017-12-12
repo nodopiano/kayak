@@ -24,6 +24,9 @@ services:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
     - wordpressmysql:/var/lib/mysql
     networks:
