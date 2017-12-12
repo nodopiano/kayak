@@ -14,10 +14,14 @@ services:
     environment: 
       VOLUME: '/var/www/html'
       SITE_NAME: sitename
-      SITE_URL: sitename.dev
+      SITE_URL: sitename.localhost
       WP_EMAIL: info@nodopiano.it
       WP_USER: nodopiano
       WP_PASSWORD: nodopiano
+      WORDPRESS_DB_HOST: np-wpdb
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wordpress
     networks:
       - wordpress
   np-wpdb:
