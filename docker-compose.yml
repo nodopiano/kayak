@@ -1,51 +1,36 @@
-version: '2'
+version: '3'
 services:
-  np-wp:
+  kwp:
     build:
       context: ./docker
       dockerfile: Dockerfile
-    links:
-    - np-wpdb:mysql
     ports:
     - 80:80
     volumes:
     - ./wp_html:/var/www/html
     - './docker/tools:/tools' 
-    environment: 
-      VOLUME: '/var/www/html'
-      SITE_NAME: "${SITE_NAME}"
-      SITE_URL: "${SITE_URL}"
-      WP_EMAIL: "${WP_EMAIL}"
-      WP_USER: "${WP_USER}"
-      WP_PASSWORD: "${WP_PASSWORD}"
-      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
-      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+    env_file: ./.env
     networks:
       - wordpress
-  np-wpdb:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+  kdb:
     image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
-      MYSQL_DATABASE: "${WORDPRESS_DB_NAME}"
-      MYSQL_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
-      MYSQL_USER: "${WORDPRESS_DB_USER}"
+    env_file: ./.env
     volumes:
     - wordpressmysql:/var/lib/mysql
     networks:
       - wordpress
-  np-wpmy:
+  kmy:
     image: corbinu/docker-phpmyadmin
-    links:
-      - np-wpdb:mysql
     ports:
       - 8181:80
     networks:
       - wordpress
-    environment:
-      MYSQL_USERNAME: "${WORDPRESS_DB_USER}"
-      MYSQL_ROOT_PASSWORD: "{WORDPRESS_DB_PASSWORD}"
+    env_file: ./.env
 networks:
   wordpress:
     driver: "bridge"

@@ -77,7 +77,6 @@ if [ $# -gt 0 ]; then
             echo ".env file already present, go ahead and install"
         fi
 
-
     elif [ "$1" == "install" ]; then
         echo "KAYAK: Initializing ..."
         if [ ! -f .env ]; then
@@ -89,28 +88,28 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSE exec np-wp install_wp
+            $COMPOSE exec kwp install_wp
         else
             $COMPOSE up -d
             echo "Waiting for services to go up..."
             sleep 10
-            echo "Installing wordpres..."
-            $COMPOSE exec np-wp install_wp
+            echo "Installing wordpress..."
+            $COMPOSE exec kwp install_wp
         fi
 
     elif [ "$1" == "wp" ]; then
-        $COMPOSE exec np-wp wp
+        $COMPOSE exec kwp wp
 
     elif [ "$1" == "dump" ]; then
         shift 1
         if [ "$EXEC" == "yes" ]; then
             $COMPOSE exec \
-            np-wpdb \
-            mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD $WORDPRESS_DB_NAME
+            kdb \
+            mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME
         else
             $COMPOSE run --rm \
-            np-wpdb \
-            mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD $WORDPRESS_DB_NAME
+            kdb \
+            mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME
         fi
 
     # Else, pass-thru args to docker-compose
