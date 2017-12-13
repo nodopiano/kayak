@@ -1,9 +1,8 @@
 FROM wordpress:php7.0
 
 ARG VOLUME
-ENV HOST_GUID=1001
+ARG HOST_GUID
  
-
 # Install requirements for wp-cli support
 RUN apt-get update \
         && apt-get install -y sudo less mysql-client \

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 UNAMEOUT="$(uname -s)"
+UID="$(id -u)"
 case "${UNAMEOUT}" in
     Linux*)             MACHINE=linux;;
     Darwin*)            MACHINE=mac;;
@@ -40,11 +41,13 @@ fi
 export MYSQL_PORT=${MYSQL_PORT:-3306}
 
 # Is the environment running
-PSRESULT="$(docker-compose ps -q)"
-if [ ! -z "$PSRESULT" ]; then
-    EXEC="yes"
-else
-    EXEC="no"
+if [ -f .env ]; then
+    PSRESULT="$(docker-compose ps -q)"
+    if [ ! -z "$PSRESULT" ]; then
+        EXEC="yes"
+    else
+        EXEC="no"
+    fi
 fi
 
 # Create base docker-compose command to run
@@ -73,6 +76,7 @@ if [ $# -gt 0 ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
             cp .env-example .env
+            $SEDCMD "s/UID=.*/UID=$UID/" .env
         else
             echo ".env file already present, go ahead and install"
         fi
