@@ -13,24 +13,24 @@ services:
     - './docker/tools:/tools' 
     environment: 
       VOLUME: '/var/www/html'
-      SITE_NAME: sitename
-      SITE_URL: sitename.localhost
-      WP_EMAIL: info@nodopiano.it
-      WP_USER: nodopiano
-      WP_PASSWORD: nodopiano
-      WORDPRESS_DB_HOST: np-wpdb
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: root
-      WORDPRESS_DB_NAME: wordpress
+      SITE_NAME: "${SITE_NAME}"
+      SITE_URL: "${SITE_URL}"
+      WP_EMAIL: "${WP_EMAIL}"
+      WP_USER: "${WP_USER}"
+      WP_PASSWORD: "${WP_PASSWORD}"
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
     networks:
       - wordpress
   np-wpdb:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: wordpress
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+      MYSQL_DATABASE: "${WORDPRESS_DB_NAME}"
+      MYSQL_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+      MYSQL_USER: "${WORDPRESS_DB_USER}"
     volumes:
     - wordpressmysql:/var/lib/mysql
     networks:
@@ -44,8 +44,8 @@ services:
     networks:
       - wordpress
     environment:
-      MYSQL_USERNAME: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: "${WORDPRESS_DB_USER}"
+      MYSQL_ROOT_PASSWORD: "{WORDPRESS_DB_PASSWORD}"
 networks:
   wordpress:
     driver: "bridge"

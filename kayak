@@ -53,34 +53,68 @@ COMPOSE="docker-compose -f docker-compose.yml"
 # If we pass any arguments...
 if [ $# -gt 0 ]; then
 
+    # Source .env, which can over-ride env vars
+    # such as APP_PORT, MYSQL_PORT, and WWWUSER
+    if [ -f .env ]; then
+        source .env
+    fi
+
     # Start up containers
     if [ "$1" == "start" ]; then
         $COMPOSE up -d
 
-    # Stop the containers
+        # Stop the containers
     elif [ "$1" == "stop" ]; then
         $COMPOSE down
 
     elif [ "$1" == "init" ]; then
-        $COMPOSE exec np-wp install_wp
-
-    elif [ "$1" == "dump" ]; then
-        shift 1
-        if [ "$EXEC" == "yes" ]; then
-            $COMPOSE exec \
-                np-wpdb \
-                mysqldump -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE
+        echo "KAYAK: Initializing ..."
+        if [ ! -f .env ]; then
+            echo "No .env file found within current working directory $(pwd)"
+            echo "Creating an empty .env file..."
+            cp .env-example .env
         else
-            $COMPOSE run --rm \
-                np-wpdb \
-                mysqldump -h mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE
+            echo ".env file already present, go ahead and install"
+        fi
+        
+
+    elif [ "$1" == "install" ]; then
+        echo "KAYAK: Initializing ..."
+        if [ ! -f .env ]; then
+            echo "No .env file found within current working directory $(pwd)"
+            echo "Creating an empty .env file..."
+            cp .env-example .env
+            echo "please set your variables before install"
+            exit 0
         fi
 
-    # Else, pass-thru args to docker-compose
+        if [ "$EXEC" == "yes" ]; then
+            $COMPOSE exec np-wp install_wp
+        else
+            $COMPOSE up -d
+            sleep 5
+            $COMPOSE exec np-wp install_wp
+        fi
+
+
+
+        elif [ "$1" == "dump" ]; then
+            shift 1
+            if [ "$EXEC" == "yes" ]; then
+                $COMPOSE exec \
+                    np-wpdb \
+                    mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD $WORDPRESS_DB_NAME
+            else
+                $COMPOSE run --rm \
+                    np-wpdb \
+                    mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD $WORDPRESS_DB_NAME
+            fi
+
+            # Else, pass-thru args to docker-compose
+        else
+            $COMPOSE "$@"
+        fi
     else
-        $COMPOSE "$@"
+        # Use the docker-compose ps command if nothing else passed through
+        $COMPOSE ps
     fi
-else
-    # Use the docker-compose ps command if nothing else passed through
-    $COMPOSE ps
-fi
