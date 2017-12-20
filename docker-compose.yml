@@ -22,6 +22,8 @@ services:
   kdb:
     image: mariadb
     env_file: ./.env
+    ports:
+    - 3306:3306
     volumes:
     - wordpressmysql:/var/lib/mysql
     networks:
