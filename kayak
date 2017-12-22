@@ -2,6 +2,12 @@
 
 UNAMEOUT="$(uname -s)"
 UID="$(id -u)"
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+reset='\e[0m' 
+yellow='\e[0;33m'
+
 case "${UNAMEOUT}" in
     Linux*)             MACHINE=linux;;
     Darwin*)            MACHINE=mac;;
@@ -52,6 +58,8 @@ fi
 
 # Create base docker-compose command to run
 COMPOSE="docker-compose -f docker-compose.yml"
+NGROK="ngrok"
+
 
 # If we pass any arguments...
 if [ $# -gt 0 ]; then
@@ -64,14 +72,16 @@ if [ $# -gt 0 ]; then
 
     # Start up containers
     if [ "$1" == "start" ]; then
+        echo -e "${yellow}KAYAK${reset}: Starting WordPress containers ..."
         $COMPOSE up -d
 
         # Stop the containers
     elif [ "$1" == "stop" ]; then
+        echo -e "${yellow}KAYAK${reset}: Stopping WordPress containers ..."
         $COMPOSE down
 
     elif [ "$1" == "init" ]; then
-        echo "KAYAK: Initializing ..."
+        echo -e "${yellow}KAYAK${reset}: Initializing ..."
         if [ ! -f .env ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
@@ -81,8 +91,25 @@ if [ $# -gt 0 ]; then
             echo ".env file already present, go ahead and install"
         fi
 
+    elif [ "$1" == "serve" ]; then
+        echo -e "${yellow}KAYAK${reset}: initializing ngrok..."
+        if ! [ -x "$(command -v ngrok)" ]; then
+            echo -e "please install ngrok with ${bold}npm install -g ngrok"
+            exit 0
+        fi
+        if [ "$EXEC" == yes ]; then
+            echo -e "${yellow}KAYAK${reset}: Initializing WordPress to share an url"
+            $COMPOSE exec kwp wp plugin install relative-url > /dev/null 2>&1
+            $COMPOSE exec kwp wp plugin activate relative-url > /dev/null 2>&1  
+            $NGROK http -host-header=$SITE_URL 80
+            echo -e "${yellow}KAYAK${reset}: resuming normal WordPress operations"
+            $COMPOSE exec kwp wp plugin deactivate relative-url > /dev/null 2>&1
+        else 
+            echo -e "please start your containers with: ${bold}kayak start"
+        fi
+
     elif [ "$1" == "install" ]; then
-        echo "KAYAK: Initializing ..."
+        echo -e "${yellow}KAYAK${reset}: Initializing ..."
         if [ ! -f .env ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
@@ -95,9 +122,9 @@ if [ $# -gt 0 ]; then
             $COMPOSE exec kwp install_wp
         else
             $COMPOSE up -d
-            echo "Waiting for services to go up..."
+            echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
-            echo "Installing wordpress..."
+            echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
             $COMPOSE exec kwp install_wp
         fi
 
