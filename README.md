@@ -30,6 +30,14 @@ you can dump the database anytime you want with a line:
 kayak dump > dump.sql
 ```
 
+## Share your local WordPress with others
+Sometimes you want to share your local WordPress install with a collegue or a client to let them see what you're working on. Meet kayak serve.
+```
+kayak serve
+```
+kayak uses ngrok.io to create a tunnel and a WordPress plugin (relative-url) to make everything work. 
+When you stop ngrok (CTRL-C), kayak deactivates relative-url plugin to let you work as usual.
+
 ## Credits
 Kayak is heavily based on [Chris Fidao](https://github.com/fideloper) [Vessel](https://github.com/shipping-docker/vessel)
 
