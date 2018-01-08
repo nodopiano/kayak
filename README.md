@@ -16,6 +16,10 @@ just edit the .env file and then install WordPress with:
 kayak install
 ```
 
+## Wordpress URL and Ports
+
+Kayak binds to port 80 and 3306 on your machine, so you can simply go to http://localhost in your browser. Please make sure you don't have other services running under those ports.
+
 ## WP-Cli
 
 WP-CLI is a set of command-line tools for managing WordPress installations. You can update plugins, configure multisite installs and much more, without using a web browser.
