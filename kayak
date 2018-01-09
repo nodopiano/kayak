@@ -129,7 +129,7 @@ if [ $# -gt 0 ]; then
         fi
 
     elif [ "$1" == "wp" ]; then
-        $COMPOSE exec kwp wp
+        $COMPOSE exec kwp wp "${@:2}"
 
     elif [ "$1" == "dump" ]; then
         shift 1
