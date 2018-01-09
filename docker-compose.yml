@@ -29,7 +29,7 @@ services:
     networks:
       - wordpress
   kmy:
-    image: corbinu/docker-phpmyadmin
+    image: phpmyadmin/phpmyadmin
     ports:
       - 8181:80
     networks:
