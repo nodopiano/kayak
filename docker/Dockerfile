@@ -1,4 +1,4 @@
-FROM wordpress:php7.0
+FROM wordpress:php7.2
 
 ARG VOLUME
 ARG HOST_GUID
