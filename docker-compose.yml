@@ -1,15 +1,17 @@
 version: '3'
 services:
   kwp:
+    image: kayak:composer
     build:
-      context: ./docker
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: /docker/Dockerfile
       args:
         HOST_GUID: ${UID}
     ports:
     - 80:80
     volumes:
-    - ./wp_html:/var/www/html
+    # - ./themes:/var/www/html/wp/wp-content/themes
+    - ./:/var/www/html/
     - './docker/tools:/tools' 
     env_file: ./.env
     networks:
@@ -32,6 +34,11 @@ services:
     image: phpmyadmin/phpmyadmin
     ports:
       - 8181:80
+    networks:
+      - wordpress
+    env_file: ./.env
+  kredis:
+    image: redis:alpine
     networks:
       - wordpress
     env_file: ./.env

@@ -1,3 +1,5 @@
 wp_html
 db
 .env
+wp/
+vendor/

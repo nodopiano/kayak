@@ -119,17 +119,17 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSE exec kwp install_wp
+            $COMPOSE exec kwp /tools/install_wp.sh
         else
             $COMPOSE up -d
             echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
             echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
-            $COMPOSE exec kwp install_wp
+            $COMPOSE exec kwp /tools/install_wp.sh
         fi
 
     elif [ "$1" == "wp" ]; then
-        $COMPOSE exec kwp wp "${@:2}"
+        $COMPOSE exec kwp /tools/wp "${@:2}"
 
     elif [ "$1" == "dump" ]; then
         shift 1

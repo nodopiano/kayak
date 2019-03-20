@@ -1,0 +1,67 @@
+{
+    "name": "nodopiano/kayak",
+    "description": "a wordpress opinionated boilerplate",
+    "version": "1.0.0",
+    "type": "root",
+    "keywords": [],
+    "homepage": "http://sitename.test",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        },
+        {
+            "type": "composer",
+            "url": "https://wp-languages.github.io"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "advanced-custom-fields/advanced-custom-fields-pro",
+                "version": "5.7.6",
+                "type": "wordpress-plugin",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download"
+                },
+                "require": {
+                    "philippbaschke/acf-pro-installer": "^1.0",
+                    "composer/installers": "^1.0"
+                }
+            }
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0",
+        "johnpbloch/wordpress": "^5.1",
+        "johnpbloch/wordpress-core-installer": "~1.0",
+        "koodimonni-language/it_IT": "*",
+        "wpackagist-plugin/w3-total-cache": "~0.9.6",
+        "wpackagist-plugin/wordpress-seo": "~8.2",
+        "wpackagist-plugin/iubenda-cookie-law-solution": "1.14.3",
+        "advanced-custom-fields/advanced-custom-fields-pro": "~5.7.6",
+        "automattic/jetpack": "~6.5"
+    },
+    "extra": {
+        "wordpress-install-dir": "wp",
+        "installer-paths": {
+            "wp/wp-content/plugins/{$name}": [
+                "type:wordpress-plugin"
+            ],
+            "wp/wp-content/themes/{$name}": [
+                "type:wordpress-theme"
+            ]
+        },
+        "dropin-paths": {
+            "wp/wp-content/languages/": [
+                "vendor:koodimonni-language"
+            ]
+      }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable" : true,
+    "scripts": {
+        "post-install-cmd": [
+        ]
+    }
+}
