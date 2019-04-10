@@ -1,0 +1,14 @@
+global:
+  sql_adapter: default
+
+local:
+  vhost: "<%= ENV['SITE_URL'] %>"
+  wordpress_path: "<%= ENV['PWD'] %>/wp_html"
+
+  database:
+    name: "<%= ENV['MYSQL_DATABASE'] %>"
+    user: "root"
+    password: "<%= ENV['MYSQL_ROOT_PASSWORD'] %>"
+    host: "127.0.0.1"
+
+# Complete your Movefile with the necessary settings

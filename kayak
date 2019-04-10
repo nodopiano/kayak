@@ -131,6 +131,9 @@ if [ $# -gt 0 ]; then
     elif [ "$1" == "wp" ]; then
         $COMPOSE exec kwp wp "${@:2}"
 
+    elif [ "$1" == "wordmove" ]; then
+        docker/tools/wordmove.sh "${@:2}"
+
     elif [ "$1" == "dump" ]; then
         shift 1
         if [ "$EXEC" == "yes" ]; then
