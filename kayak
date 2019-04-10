@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 UNAMEOUT="$(uname -s)"
-UID="$(id -u)"
+USER_UID="$(id -u)"
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -86,7 +86,7 @@ if [ $# -gt 0 ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
             cp .env-example .env
-            $SEDCMD "s/UID=.*/UID=$UID/" .env
+            $SEDCMD "s/USER_UID=.*/USER_UID=$UID/" .env
         else
             echo ".env file already present, go ahead and install"
         fi

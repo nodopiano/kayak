@@ -5,7 +5,7 @@ services:
       context: ./docker
       dockerfile: Dockerfile
       args:
-        HOST_GUID: ${UID}
+        HOST_GUID: ${USER_UID}
     ports:
     - 80:80
     volumes:
