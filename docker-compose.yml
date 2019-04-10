@@ -10,6 +10,7 @@ services:
     - 80:80
     volumes:
     - ./wp_html:/var/www/html
+    - ./conf/php.ini:/usr/local/etc/php/php.ini
     - './docker/tools:/tools' 
     env_file: ./.env
     networks:
