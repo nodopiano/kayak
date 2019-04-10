@@ -10,7 +10,9 @@ services:
     - 80:80
     volumes:
     - ./wp_html:/var/www/html
-    - './docker/tools:/tools' 
+    - $MOVEFILE_PATH/Movefile:/var/www/html/Movefile
+    - './docker/tools:/tools'
+    - $SSH_AUTH_SOCK:/ssh-agent
     env_file: ./.env
     networks:
       - wordpress

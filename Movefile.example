@@ -3,7 +3,7 @@ global:
 
 local:
   vhost: "<%= ENV['SITE_URL'] %>"
-  wordpress_path: "<%= ENV['PWD'] %>/wp_html"
+  wordpress_path: "<%= ENV['PWD'] %>"
 
   database:
     name: "<%= ENV['MYSQL_DATABASE'] %>"
