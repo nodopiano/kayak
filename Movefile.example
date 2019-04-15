@@ -3,12 +3,12 @@ global:
 
 local:
   vhost: "<%= ENV['SITE_URL'] %>"
-  wordpress_path: "<%= ENV['PWD'] %>"
+  wordpress_path: "/var/www/html/"
 
   database:
     name: "<%= ENV['MYSQL_DATABASE'] %>"
     user: "root"
     password: "<%= ENV['MYSQL_ROOT_PASSWORD'] %>"
-    host: "127.0.0.1"
+    host: "kdb"
 
 # Complete your Movefile with the necessary settings
