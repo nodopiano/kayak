@@ -1,0 +1,21 @@
+FROM ruby:2.6-alpine
+
+# Add wordmove
+RUN gem install wordmove
+RUN mkdir -p /var/www/
+
+RUN apk --update add openssh
+RUN apk add mariadb-client
+RUN apk add rsync
+RUN apk add lftp
+
+RUN adduser wordmove -D 
+
+USER wordmove
+
+RUN mkdir -p ~/.ssh
+
+WORKDIR /var/www/
+# Set background script
+COPY ./checkscript.sh /bin/checkscript
+CMD ["/bin/sh", "-c", "checkscript"]
