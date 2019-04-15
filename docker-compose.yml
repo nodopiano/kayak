@@ -10,9 +10,7 @@ services:
     - 80:80
     volumes:
     - ./wp_html:/var/www/html
-    - $MOVEFILE_PATH/Movefile:/var/www/html/Movefile
     - './docker/tools:/tools'
-    - $SSH_AUTH_SOCK:/ssh-agent
     env_file: ./.env
     networks:
       - wordpress
@@ -43,8 +41,7 @@ services:
       dockerfile: Dockerfile.wordmove
     volumes:
     - ./wp_html:/var/www/html
-    - $MOVEFILE_PATH/movefile.yml:/var/www/movefile.yml
-    - './docker/tools:/tools'
+    - ./$MOVEFILE_PATH/movefile.yml:/var/www/movefile.yml
     - $HOME/.ssh:/home/wordmove/.ssh/
     env_file: ./.env
     networks:
