@@ -132,7 +132,7 @@ if [ $# -gt 0 ]; then
         $COMPOSE exec kwp wp "${@:2}"
 
     elif [ "$1" == "wordmove" ]; then
-        $COMPOSE exec kwp bash wmove "${@:2}"
+        $COMPOSE exec kwm wordmove "${@:2}"
 
     elif [ "$1" == "dump" ]; then
         shift 1
