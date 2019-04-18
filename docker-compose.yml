@@ -42,7 +42,9 @@ services:
     volumes:
     - ./wp_html:/var/www/html
     - ./$MOVEFILE_PATH/movefile.yml:/var/www/movefile.yml
-    - $HOME/.ssh:/home/wordmove/.ssh/
+    - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
     env_file: ./.env
     networks:
       - wordpress
