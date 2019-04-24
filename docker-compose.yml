@@ -5,13 +5,12 @@ services:
       context: ./docker
       dockerfile: Dockerfile
       args:
-        HOST_GUID: ${UID}
+        HOST_GUID: ${USER_UID}
     ports:
     - 80:80
     volumes:
     - ./wp_html:/var/www/html
-    - ./conf/php.ini:/usr/local/etc/php/php.ini
-    - './docker/tools:/tools' 
+    - './docker/tools:/tools'
     env_file: ./.env
     networks:
       - wordpress
@@ -36,6 +35,19 @@ services:
     networks:
       - wordpress
     env_file: ./.env
+  kwm:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.wordmove
+    volumes:
+    - ./wp_html:/var/www/html
+    - ./$MOVEFILE_PATH/movefile.yml:/var/www/movefile.yml
+    - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    env_file: ./.env
+    networks:
+      - wordpress
 networks:
   wordpress:
     driver: "bridge"

@@ -1,0 +1,36 @@
+FROM ruby:2.6-alpine
+
+# Add wordmove
+RUN gem install wordmove
+RUN mkdir -p /var/www/
+
+RUN apk --update add openssh
+RUN apk add mariadb-client
+RUN apk add rsync
+RUN apk add lftp
+
+RUN adduser wordmove -D 
+
+# Add WP-Cli support
+RUN apk add curl
+
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+RUN apk add php7 php7-phar
+RUN apk add php7-json php7-zip php7-curl php7-mysqli php7-mbstring
+
+RUN apk add less
+
+RUN chmod +xxx wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
+
+# Make everything read for use
+USER wordmove
+
+RUN mkdir -p ~/.ssh
+
+WORKDIR /var/www/
+
+# Set background script
+COPY ./checkscript.sh /bin/checkscript
+CMD ["/bin/sh", "-c", "checkscript"]

@@ -28,6 +28,28 @@ To use wp-cli just type:­
 kayak wp  
 ```
 
+## Wordmove
+
+Kayak comes with Wordmove available in a separate container. In this way, you do not need to install Ruby nor Wordmove on your local machine.
+
+**Attention:** in order to be able to use Wordmove with Kayak, you **do need** to:
+
+1. Specify the `MOVEFILE_PATH` variable inside your `.env` file. It should point to the *directory* in which your `movefile.yml` file is present.
+
+2. Start creating your movefile from `movefile.example.yml`, as it comes configured for Wordmove to work with variables specified in `.env` file. You may modify the `sql_adapter` to either one of your choice, but `wpcli` should work fine in most cases and it's already configured inside the Wordmove container.
+
+To use Wordmove, simply run:
+```bash
+kayak wordmove [your wordmove parameters]
+```
+
+Take a look at [Welaika's Wordmove project here](https://github.com/welaika/wordmove).
+
+**TIP**: you can configure your movefile to accept environment variables described in `.env` using the syntax:
+```
+<%= ENV['YOUR_ENV_VAR_NAME'] %>
+```
+
 ## Database dump
 you can dump the database anytime you want with a line: 
 ```
