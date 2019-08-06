@@ -41,7 +41,7 @@ services:
       dockerfile: Dockerfile.wordmove
     volumes:
     - ./wp_html:/var/www/html
-    - ./$MOVEFILE_PATH/movefile.yml:/var/www/movefile.yml
+    - ./$MOVEFILE_PATH:/var/www/movefile.yml
     - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
     environment:
       SSH_AUTH_SOCK: /ssh-agent
