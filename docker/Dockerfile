@@ -5,7 +5,7 @@ ARG HOST_GUID
  
 # Install requirements for wp-cli support
 RUN apt-get update \
-        && apt-get install -y sudo less mysql-client \
+        && apt-get install -y sudo less mariadb-client \
         && rm -rf /var/lib/apt/lists/*
 
 # Add WP-CLI 
