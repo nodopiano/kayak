@@ -36,13 +36,18 @@ services:
       - wordpress
     env_file: ./.env
   kwm:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.wordmove
+    tty: true
+    depends_on:
+      - kwp
+    restart: on-failure:5
+    image: welaika/wordmove
     volumes:
-    - ./wp_html:/var/www/html
-    - ./$MOVEFILE_PATH:/var/www/movefile.yml
-    - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+      - ./wp_html:/var/www/html
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./$MOVEFILE_PATH:/html/movefile.yml
+      - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     env_file: ./.env
