@@ -135,7 +135,14 @@ if [ $# -gt 0 ]; then
         fi
 
     elif [ "$1" == "wp" ]; then
-        $COMPOSE exec kwp wp "${@:2}"
+        PARAMS="${@:2}"
+        if [ "$2" == "--no-tty" ]; then
+            COMPOSE_EXEC="$COMPOSE exec -T"
+            PARAMS="${@:3}"
+        else
+            COMPOSE_EXEC="$COMPOSE exec"
+        fi
+        $COMPOSE_EXEC kwp wp $PARAMS
 
     elif [ "$1" == "wordmove" ]; then
         $COMPOSE exec kwm wordmove "${@:2}"
