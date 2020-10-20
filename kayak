@@ -109,6 +109,13 @@ if [ $# -gt 0 ]; then
 
     elif [ "$1" == "install" ]; then
         echo -e "${yellow}KAYAK${reset}: Initializing ..."
+
+        if [ "$2" == "--no-tty" ]; then
+            COMPOSER_EXEC="$COMPOSE exec -T"
+        else
+            COMPOSER_EXEC="$COMPOSE exec"
+        fi
+
         if [ ! -f .env ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
@@ -118,13 +125,13 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSE exec kwp install_wp
+            $COMPOSER_EXEC kwp install_wp
         else
             $COMPOSE up -d
             echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
             echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
-            $COMPOSE exec kwp install_wp
+            $COMPOSER_EXEC kwp install_wp
         fi
 
     elif [ "$1" == "wp" ]; then
