@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   kwp:
     build:
@@ -7,7 +7,7 @@ services:
       args:
         HOST_GUID: ${USER_UID}
     ports:
-    - 80:80
+      - 80:80
     volumes:
     - ./wp_html:/var/www/html
     - './docker/tools:/tools'
@@ -23,9 +23,9 @@ services:
     image: mariadb
     env_file: ./.env
     ports:
-    - 3306:3306
+      - 3306:3306
     volumes:
-    - wordpressmysql:/var/lib/mysql
+      - wordpressmysql:/var/lib/mysql
     networks:
       - wordpress
   kmy:

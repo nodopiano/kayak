@@ -5,7 +5,7 @@ USER_UID="$(id -u)"
 
 bold=$(tput bold)
 normal=$(tput sgr0)
-reset='\e[0m' 
+reset='\e[0m'
 yellow='\e[0;33m'
 
 case "${UNAMEOUT}" in
@@ -100,11 +100,11 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == yes ]; then
             echo -e "${yellow}KAYAK${reset}: Initializing WordPress to share an url"
             $COMPOSE exec kwp wp plugin install relative-url > /dev/null 2>&1
-            $COMPOSE exec kwp wp plugin activate relative-url > /dev/null 2>&1  
+            $COMPOSE exec kwp wp plugin activate relative-url > /dev/null 2>&1
             $NGROK http -host-header=$SITE_URL 80
             echo -e "${yellow}KAYAK${reset}: resuming normal WordPress operations"
             $COMPOSE exec kwp wp plugin deactivate relative-url > /dev/null 2>&1
-        else 
+        else
             echo -e "please start your containers with: ${bold}kayak start"
         fi
 
