@@ -111,9 +111,9 @@ if [ $# -gt 0 ]; then
         echo -e "${yellow}KAYAK${reset}: Initializing ..."
 
         if [ "$2" == "--no-tty" ]; then
-            COMPOSER_EXEC="$COMPOSE exec -T"
+            COMPOSE_EXEC="$COMPOSE exec -T"
         else
-            COMPOSER_EXEC="$COMPOSE exec"
+            COMPOSE_EXEC="$COMPOSE exec"
         fi
 
         if [ ! -f .env ]; then
@@ -125,13 +125,13 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSER_EXEC kwp install_wp
+            $COMPOSE_EXEC kwp install_wp
         else
             $COMPOSE up -d
             echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
             echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
-            $COMPOSER_EXEC kwp install_wp
+            $COMPOSE_EXEC kwp install_wp
         fi
 
     elif [ "$1" == "wp" ]; then
