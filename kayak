@@ -146,6 +146,14 @@ if [ $# -gt 0 ]; then
             mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME
         fi
 
+    elif [ "$1" == "import" ]; then
+        shift 1
+        if [ "$EXEC" == "yes" ]; then
+            mysql -h 127.0.0.1 -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME < dump.sql
+        else
+            echo "Please run \"kayak start\" to avoid possible data destruction"
+        fi
+
     # Else, pass-thru args to docker-compose
     else
         $COMPOSE "$@"
