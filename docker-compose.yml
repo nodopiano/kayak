@@ -9,8 +9,10 @@ services:
     ports:
       - 80:80
     volumes:
-    - ./wp_html:/var/www/html
-    - './docker/tools:/tools'
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./wp_html:/var/www/html
+      - "./docker/tools:/tools"
     env_file: ./.env
     networks:
       - wordpress
