@@ -16,6 +16,20 @@ just edit the .env file and then install WordPress with:
 kayak install
 ```
 
+If the installation fails due to a database connection error, simply wait a minute
+and try again. Most of the times mysql just needs a while to get up and running.
+
+## Structure
+Everything you might want to commit is already prepared for you in the root directory:
+both the `themes` and `plugins` folders are created and wired to the internal `wp-content`
+directory inside the Wordpress container.
+
+When you start the containers for the first time, a entrypoint script is launched
+in order to fix some chown issues on the `themes` and `plugins` folder. 
+
+This might take a while, as it needs to configure Apache, Wordpress and MySQL *before*
+fixing the permissions.
+
 ## Wordpress URL and Ports
 
 Kayak binds to port 80 and 3306 on your machine, so you can simply go to http://localhost in your browser. Please make sure you don't have other services running under those ports.
@@ -36,7 +50,7 @@ Kayak comes with Wordmove available in a separate container. In this way, you do
 
 1. Specify the `MOVEFILE_PATH` variable inside your `.env` file. It should point to the *directory* in which your `movefile.yml` file is present.
 
-2. Start creating your movefile from `movefile.example.yml`, as it comes configured for Wordmove to work with variables specified in `.env` file. You may modify the `sql_adapter` to either one of your choice, but `wpcli` should work fine in most cases and it's already configured inside the Wordmove container.
+2. Start creating your movefile from `movefile.yml`, as it comes configured for Wordmove to work with variables specified in `.env` file. You may modify the `sql_adapter` to either one of your choice, but `wpcli` should work fine in most cases and it's already configured inside the Wordmove container.
 
 To use Wordmove, simply run:
 ```bash
@@ -56,8 +70,14 @@ you can dump the database anytime you want with a line:
 kayak dump > dump.sql
 ```
 
+If you need to restore it or import a colleague's database dump you can simply run:
+```
+kayak import
+```
+assuming that the dump file is called `dump.sql`
+
 ## Share your local WordPress with others
-Sometimes you want to share your local WordPress install with a collegue or a client to let them see what you're working on. Meet kayak serve.
+Sometimes you want to share your local WordPress install with a colleague or a client to let them see what you're working on. Meet kayak serve.
 ```
 kayak serve
 ```

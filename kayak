@@ -5,7 +5,7 @@ USER_UID="$(id -u)"
 
 bold=$(tput bold)
 normal=$(tput sgr0)
-reset='\e[0m' 
+reset='\e[0m'
 yellow='\e[0;33m'
 
 case "${UNAMEOUT}" in
@@ -28,8 +28,7 @@ fi
 if [ "$MACHINE" == "linux" ]; then
     if grep -q Microsoft /proc/version; then # WSL
         export XDEBUG_HOST=10.0.75.1
-    else
-        export XDEBUG_HOST=$(/sbin/ifconfig docker0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1)
+        # export XDEBUG_HOST=$(/sbin/ifconfig docker0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1)
     fi
     SEDCMD="sed -i"
 elif [ "$MACHINE" == "mac" ]; then
@@ -100,16 +99,23 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == yes ]; then
             echo -e "${yellow}KAYAK${reset}: Initializing WordPress to share an url"
             $COMPOSE exec kwp wp plugin install relative-url > /dev/null 2>&1
-            $COMPOSE exec kwp wp plugin activate relative-url > /dev/null 2>&1  
+            $COMPOSE exec kwp wp plugin activate relative-url > /dev/null 2>&1
             $NGROK http -host-header=$SITE_URL 80
             echo -e "${yellow}KAYAK${reset}: resuming normal WordPress operations"
             $COMPOSE exec kwp wp plugin deactivate relative-url > /dev/null 2>&1
-        else 
+        else
             echo -e "please start your containers with: ${bold}kayak start"
         fi
 
     elif [ "$1" == "install" ]; then
         echo -e "${yellow}KAYAK${reset}: Initializing ..."
+
+        if [ "$2" == "--no-tty" ]; then
+            COMPOSE_EXEC="$COMPOSE exec -T"
+        else
+            COMPOSE_EXEC="$COMPOSE exec"
+        fi
+
         if [ ! -f .env ]; then
             echo "No .env file found within current working directory $(pwd)"
             echo "Creating an empty .env file..."
@@ -119,17 +125,24 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSE exec kwp install_wp
+            $COMPOSE_EXEC kwp install_wp
         else
             $COMPOSE up -d
             echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
             echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
-            $COMPOSE exec kwp install_wp
+            $COMPOSE_EXEC kwp install_wp
         fi
 
     elif [ "$1" == "wp" ]; then
-        $COMPOSE exec kwp wp "${@:2}"
+        PARAMS="${@:2}"
+        if [ "$2" == "--no-tty" ]; then
+            COMPOSE_EXEC="$COMPOSE exec -T"
+            PARAMS="${@:3}"
+        else
+            COMPOSE_EXEC="$COMPOSE exec"
+        fi
+        $COMPOSE_EXEC kwp wp $PARAMS
 
     elif [ "$1" == "wordmove" ]; then
         $COMPOSE exec kwm wordmove "${@:2}"
@@ -144,6 +157,14 @@ if [ $# -gt 0 ]; then
             $COMPOSE run --rm \
             kdb \
             mysqldump -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME
+        fi
+
+    elif [ "$1" == "import" ]; then
+        shift 1
+        if [ "$EXEC" == "yes" ]; then
+            mysql -h 127.0.0.1 -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD --default-character-set=utf8mb4 $WORDPRESS_DB_NAME < dump.sql
+        else
+            echo "Please run \"kayak start\" to avoid possible data destruction"
         fi
 
     # Else, pass-thru args to docker-compose

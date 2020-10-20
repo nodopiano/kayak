@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   kwp:
     build:
@@ -7,10 +7,12 @@ services:
       args:
         HOST_GUID: ${USER_UID}
     ports:
-    - 80:80
+      - 80:80
     volumes:
-    - ./wp_html:/var/www/html
-    - './docker/tools:/tools'
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./wp_html:/var/www/html
+      - "./docker/tools:/tools"
     env_file: ./.env
     networks:
       - wordpress
@@ -23,9 +25,9 @@ services:
     image: mariadb
     env_file: ./.env
     ports:
-    - 3306:3306
+      - 3306:3306
     volumes:
-    - wordpressmysql:/var/lib/mysql
+      - wordpressmysql:/var/lib/mysql
     networks:
       - wordpress
   kmy:
@@ -36,13 +38,18 @@ services:
       - wordpress
     env_file: ./.env
   kwm:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.wordmove
+    tty: true
+    depends_on:
+      - kwp
+    restart: on-failure:5
+    image: welaika/wordmove
     volumes:
-    - ./wp_html:/var/www/html
-    - ./$MOVEFILE_PATH:/var/www/movefile.yml
-    - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+      - ./wp_html:/var/www/html
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./$MOVEFILE_PATH:/html/movefile.yml
+      - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     env_file: ./.env
