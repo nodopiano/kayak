@@ -42,7 +42,9 @@ services:
     depends_on:
       - kwp
     restart: on-failure:5
-    image: welaika/wordmove
+    build:
+      context: ./docker
+      dockerfile: Wordmove.dockerfile
     volumes:
       - ./wp_html:/var/www/html
       - ./themes:/var/www/html/wp-content/themes
