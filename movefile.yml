@@ -1,14 +1,117 @@
+# Generated with <3 by Ansible
+
 global:
   sql_adapter: wpcli
 
 local:
-  vhost: "<%= ENV['SITE_URL'] %>"
-  wordpress_path: "/var/www/html/"
+  vhost: "http://nostroposto.localhost"
+  wordpress_path: "/var/www/html" # use an absolute path here
 
   database:
-    name: "<%= ENV['MYSQL_DATABASE'] %>"
-    user: "root"
-    password: "<%= ENV['MYSQL_ROOT_PASSWORD'] %>"
+    name: "<%= ENV['WORDPRESS_DB_NAME'] %>"
+    user: "<%= ENV['WORDPRESS_DB_USER'] %>"
+    password: "<%= ENV['WORDPRESS_DB_PASSWORD'] %>"
     host: "kdb"
 
-# Complete your Movefile with the necessary settings
+staging:
+  vhost: "http://nostroposto.grop.xyz"
+  wordpress_path: "/home/nostroposto/web/nostroposto.grop.xyz/public_html/" # use an absolute path here
+
+  database:
+    name: "nostroposto_DB"
+    user: "nostroposto_U"
+    password: "m8JCv8kA64qFOC."
+    host: "eniac.nodopiano.it"
+    # port: "3308" # Use just in case you have exotic server config
+
+  exclude:
+    - ".git/"
+    - ".gitignore"
+    - ".sass-cache/"
+    - "bin/"
+    - "tmp/*"
+    - "Gemfile*"
+    - "Movefile"
+    - "wp-config.php"
+    - "wp-content/*.sql"
+    - "sftp-config.json"
+    - "backups"
+    - "node_modules"
+    - "bower_components"
+
+  # paths: # you can customize wordpress internal paths
+  #   wp_content: "wp-content"
+  #   uploads: "wp-content/uploads"
+  #   plugins: "wp-content/plugins"
+  #   themes: "wp-content/themes"
+  #   languages: "wp-content/languages"
+  #   themes: "wp-content/themes"
+
+  ssh:
+     host: "eniac.nodopiano.it"
+     user: "root"
+     port: 1122
+  #   password: "password" # password is optional, will use public keys if available.
+  #   port: 22 # Port is optional
+     rsync_options: "--verbose --chown=nostroposto:nostroposto" # Additional rsync options, optional
+  #   gateway: # Gateway is optional
+  #     host: "host"
+  #     user: "user"
+  #     password: "password" # password is optional, will use public keys if available.
+
+  # ftp:
+  #   user: "user"
+  #   password: "password"
+  #   host: "host"
+  #   passive: true
+
+production:
+  vhost: "http://www.ilnostropostonelmondo.it"
+  wordpress_path: "/home/nostroposto/web/ilnostropostonelmondo.it/public_html/" # use an absolute path here
+
+  database:
+    name: "nostroposto_DB"
+    user: "nostroposto_U"
+    password: "m8JCv8kA64qFOC."
+    host: "bug.nodopiano.it"
+    # port: "3308" # Use just in case you have exotic server config
+
+  exclude:
+    - ".git/"
+    - ".gitignore"
+    - ".sass-cache/"
+    - "bin/"
+    - "tmp/*"
+    - "Gemfile*"
+    - "Movefile"
+    - "wp-config.php"
+    - "wp-content/*.sql"
+    - "sftp-config.json"
+    - "backups"
+    - "node_modules"
+    - "bower_components"
+
+  # paths: # you can customize wordpress internal paths
+  #   wp_content: "wp-content"
+  #   uploads: "wp-content/uploads"
+  #   plugins: "wp-content/plugins"
+  #   themes: "wp-content/themes"
+  #   languages: "wp-content/languages"
+  #   themes: "wp-content/themes"
+
+  ssh:
+     host: "bug.nodopiano.it"
+     user: "root"
+  #   password: "password" # password is optional, will use public keys if available.
+  #   port: 22 # Port is optional
+     rsync_options: "--verbose --chown=nostroposto:nostroposto" # Additional rsync options, optional
+  #   gateway: # Gateway is optional
+  #     host: "host"
+  #     user: "user"
+  #     password: "password" # password is optional, will use public keys if available.
+
+  # ftp:
+  #   user: "user"
+  #   password: "password"
+  #   host: "host"
+  #   passive: true
