@@ -44,11 +44,11 @@ kayak wp
 
 ## Wordmove
 
-Kayak comes with Wordmove available in a separate container. In this way, you do not need to install Ruby nor Wordmove on your local machine.
+Kayak comes with Wordmove available in a separate container, thanks to the [Docker Image](https://github.com/welaika/docker-wordmove) currently maintained by [@welaika](https://github.com/welaika). This way, you do not need to install Ruby nor Wordmove on your local machine.
 
 **Attention:** in order to be able to use Wordmove with Kayak, you **do need** to:
 
-1. Specify the `MOVEFILE_PATH` variable inside your `.env` file. It should point to the *directory* in which your `movefile.yml` file is present.
+1. Specify the `MOVEFILE_PATH` variable inside your `.env` file.
 
 2. Start creating your movefile from `movefile.yml`, as it comes configured for Wordmove to work with variables specified in `.env` file. You may modify the `sql_adapter` to either one of your choice, but `wpcli` should work fine in most cases and it's already configured inside the Wordmove container.
 
