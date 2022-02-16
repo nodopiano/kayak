@@ -1,0 +1,6 @@
+{
+    "search.exclude": {
+        "**/plugins": true,
+        "**/themes/twenty*/**": true
+    }
+}
