@@ -74,6 +74,10 @@ if [ $# -gt 0 ]; then
         echo -e "${yellow}KAYAK${reset}: Starting WordPress containers ..."
         $COMPOSE up -d
 
+    elif [ "$1" == "dev" ]; then
+        echo -e "${yellow}KAYAK${reset}: Starting WordPress containers ..."
+        $COMPOSE up
+
         # Stop the containers
     elif [ "$1" == "stop" ]; then
         echo -e "${yellow}KAYAK${reset}: Stopping WordPress containers ..."
