@@ -1,0 +1,72 @@
+version: "3"
+services:
+  kwp:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        HOST_GUID: ${USER_UID}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.wp-$SITE_NAME.rule=Host(`$SITE_NAME.wp.test`)
+      - traefik.http.routers.wp-$SITE_NAME.tls=true
+    volumes:
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./wp_html:/var/www/html
+      - "./docker/tools:/tools"
+    env_file: ./.env
+    networks:
+      - wordpress
+      - proxy
+  kdb:
+    image: mariadb
+    env_file: ./.env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.db-$SITE_NAME.rule=Host(`$SITE_NAME.mysql.test`)
+    volumes:
+      - wordpressmysql:/var/lib/mysql
+    networks:
+      - wordpress
+      - proxy
+  kmy:
+    image: phpmyadmin/phpmyadmin
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.my-$SITE_NAME.rule=Host(`$SITE_NAME.pmy.test`)
+    networks:
+      - wordpress
+      - proxy
+    env_file: ./.env
+  kwm:
+    tty: true
+    depends_on:
+      - kwp
+    restart: on-failure:5
+    build:
+      context: ./docker
+      dockerfile: Wordmove.dockerfile
+    volumes:
+      - ./wp_html:/var/www/html
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./$MOVEFILE_PATH:/html/movefile.yml
+      - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    env_file: ./.env
+    networks:
+      - wordpress
+networks:
+  wordpress:
+    driver: "bridge"
+  proxy:
+    external: true
+volumes:
+  wordpressmysql:
+    driver: "local"

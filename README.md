@@ -24,7 +24,7 @@ Everything you might want to commit is already prepared for you in the root dire
 both the `themes` and `plugins` folders are created and wired to the internal `wp-content`
 directory inside the Wordpress container.
 
-When you start the containers for the first time, a entrypoint script is launched
+When you start the containers for the first time, an entrypoint script is launched
 in order to fix some chown issues on the `themes` and `plugins` folder. 
 
 This might take a while, as it needs to configure Apache, Wordpress and MySQL *before*
@@ -33,6 +33,14 @@ fixing the permissions.
 ## Wordpress URL and Ports
 
 Kayak binds to port 80 and 3306 on your machine, so you can simply go to http://localhost in your browser. Please make sure you don't have other services running under those ports.
+
+## Traefik proxy
+If you want to run multiple kayak instances, you should use a proxy. We provide a [working configuration for traefik](https://github.com/nodopiano/traefik-proxy) and a ready to use compose file. Just set
+```
+PROXY=true
+```
+in your .env file and we'll take care of everything. 
+** Please note that we use default local domains for wordpress, so your application will be ready on `https://sitename.wp.test` **
 
 ## WP-Cli
 
