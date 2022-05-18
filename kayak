@@ -57,7 +57,8 @@ fi
 
 # Create base docker-compose command to run
 COMPOSE="docker-compose -f docker-compose.yml"
-if [ $PROXY  == TRUE ] then
+IS_PROXY="${PROXY:-FALSE}"
+if [ $IS_PROXY  == TRUE ]; then
     COMPOSE="docker-compose -f docker-compose-proxy.yml"
 fi
 NGROK="ngrok"
