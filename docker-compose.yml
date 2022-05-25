@@ -42,6 +42,7 @@ services:
       - kwp
       - kdb
     image: wordpress:cli
+    user: "${USER_UID}:33"
     networks:
       - wordpress
     volumes:
