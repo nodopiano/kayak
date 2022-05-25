@@ -42,6 +42,17 @@ services:
       - wordpress
       - proxy
     env_file: ./.env
+  wpcli:
+    depends_on:
+      - kwp
+      - kdb
+    image: wordpress:cli
+    networks:
+      - wordpress
+    volumes:
+      - ./wp_html:/var/www/html
+    working_dir: /var/www/html
+    env_file: ./.env
   kwm:
     tty: true
     depends_on:

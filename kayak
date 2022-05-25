@@ -133,24 +133,24 @@ if [ $# -gt 0 ]; then
         fi
 
         if [ "$EXEC" == "yes" ]; then
-            $COMPOSE_EXEC kwp install_wp
+            $COMPOSE run --rm wpcli wp core install --url="$SITE_URL" --title="$SITE_NAME" --admin_user="$WP_USER" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL"
         else
             $COMPOSE up -d
             echo -e "${yellow}KAYAK${reset}: Waiting for services to go up..."
             sleep 10
             echo -e "${yellow}KAYAK${reset}:Installing wordpress..."
-            $COMPOSE_EXEC kwp install_wp
+            $COMPOSE run --rm wpcli wp core install --url="$SITE_URL" --title="$SITE_NAME" --admin_user="$WP_USER" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL"
         fi
 
     elif [ "$1" == "wp" ]; then
         PARAMS="${@:2}"
         if [ "$2" == "--no-tty" ]; then
-            COMPOSE_EXEC="$COMPOSE exec -T"
+            COMPOSE_EXEC="$COMPOSE run -T"
             PARAMS="${@:3}"
         else
-            COMPOSE_EXEC="$COMPOSE exec"
+            COMPOSE_EXEC="$COMPOSE run"
         fi
-        $COMPOSE_EXEC kwp wp $PARAMS
+        $COMPOSE_EXEC --rm wpcli wp $PARAMS
 
     elif [ "$1" == "wordmove" ]; then
         $COMPOSE exec kwm wordmove "${@:2}"
