@@ -66,6 +66,7 @@ services:
       - ./$MOVEFILE_PATH:/html/movefile.yml
       - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
       - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+      - ./docker/.lftprc:/home/wordmove-user/.lftprc
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     env_file: ./.env

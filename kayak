@@ -152,6 +152,12 @@ if [ $# -gt 0 ]; then
         fi
         $COMPOSE_EXEC --rm wpcli wp $PARAMS
 
+    elif [ "$1" == "theme" ]; then
+        $COMPOSE exec kwp composer -d "./wp-content/themes/$SITE_NAME-theme" "${@:2}"
+
+    elif [ "$1" == "composer" ]; then
+        $COMPOSE exec kwp composer "${@:2}"
+
     elif [ "$1" == "wordmove" ]; then
         $COMPOSE exec --user wordmove-user kwm wordmove "${@:2}"
 

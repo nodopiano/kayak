@@ -1,8 +1,9 @@
-FROM wordpress:php7.4
+FROM wordpress:php8.1
 
 ARG VOLUME
 ARG HOST_GUID
 
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 # Install requirements for wp-cli support
 RUN apt-get update \
         && apt-get install -y sudo less mariadb-client \
