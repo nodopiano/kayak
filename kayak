@@ -158,6 +158,11 @@ if [ $# -gt 0 ]; then
     elif [ "$1" == "composer" ]; then
         $COMPOSE exec kwp composer "${@:2}"
 
+    elif [ "$1" == "update" ]; then
+        curl https://raw.githubusercontent.com/nodopiano/kayak/master/kayak -o kayak \
+        curl https://raw.githubusercontent.com/nodopiano/kayak/master/docker-compose.yml -o docker-compose.yml \
+        curl https://raw.githubusercontent.com/nodopiano/kayak/master/docker/Dockerfile -o docker/Dockerfile
+    
     elif [ "$1" == "wordmove" ]; then
         $COMPOSE exec --user wordmove-user kwm wordmove "${@:2}"
 
