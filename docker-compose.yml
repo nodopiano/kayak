@@ -51,27 +51,27 @@ services:
       - ./plugins:/var/www/html/wp-content/plugins
     working_dir: /var/www/html
     env_file: ./.env
-  kwm:
-    tty: true
-    depends_on:
-      - kwp
-    restart: on-failure:5
-    build:
-      context: ./docker
-      dockerfile: Wordmove.dockerfile
-    volumes:
-      - ./wp_html:/var/www/html
-      - ./themes:/var/www/html/wp-content/themes
-      - ./plugins:/var/www/html/wp-content/plugins
-      - ./$MOVEFILE_PATH:/html/movefile.yml
-      - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
-      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
-      - ./docker/.lftprc:/home/wordmove-user/.lftprc
-    environment:
-      SSH_AUTH_SOCK: /ssh-agent
-    env_file: ./.env
-    networks:
-      - wordpress
+#   kwm:
+#     tty: true
+#     depends_on:
+#       - kwp
+#     restart: on-failure:5
+#     build:
+#       context: ./docker
+#       dockerfile: Wordmove.dockerfile
+#     volumes:
+#       - ./wp_html:/var/www/html
+#       - ./themes:/var/www/html/wp-content/themes
+#       - ./plugins:/var/www/html/wp-content/plugins
+#       - ./$MOVEFILE_PATH:/html/movefile.yml
+#       - ~/.ssh:/root/.ssh:ro # Forward local machine SSH key to docker
+#       - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+#       - ./docker/.lftprc:/home/wordmove-user/.lftprc
+#     environment:
+#       SSH_AUTH_SOCK: /ssh-agent
+#     env_file: ./.env
+#     networks:
+#       - wordpress
 networks:
   wordpress:
     driver: "bridge"
